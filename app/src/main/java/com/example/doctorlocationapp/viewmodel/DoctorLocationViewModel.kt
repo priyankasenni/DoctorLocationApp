@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.doctorlocationapp.data.repository.DoctorRepository
+import com.example.doctorlocationapp.utils.isValidZipCode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -20,11 +21,10 @@ class DoctorLocationViewModel : ViewModel() {
     fun searchByZip(zip: String) {
         viewModelScope.launch {
             try {
-                if (zip.length == 5) {
+                _error.value = ""
+                if (isValidZipCode(zip)) {
                     val result = repository.searchByZip(zip)
-//                    _response.value = "Success: $result"
                     Log.d("HTTP Response", result.toString())
-
                 } else {
                     _error.value = "Invalid Zip Code. Must be 5 digits."
                 }
@@ -32,13 +32,5 @@ class DoctorLocationViewModel : ViewModel() {
                 _error.value = "Error: ${e.message}"
             }
         }
-    }
-
-    fun searchByCountyTapped() {
-        _response.value = "Search by County Tapped"
-    }
-
-    fun useLocation() {
-        _response.value = "Fetching device location..."
     }
 }
