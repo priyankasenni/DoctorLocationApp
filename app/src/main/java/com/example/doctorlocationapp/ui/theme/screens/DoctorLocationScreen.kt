@@ -11,13 +11,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -28,7 +27,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.doctorlocationapp.R
 import com.example.doctorlocationapp.viewmodel.DoctorLocationViewModel
 import com.google.android.gms.location.LocationServices
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DoctorLocationScreen(viewModel: DoctorLocationViewModel = viewModel()) {
     Column(modifier = Modifier.fillMaxSize()) {
@@ -38,13 +41,18 @@ fun DoctorLocationScreen(viewModel: DoctorLocationViewModel = viewModel()) {
             title = {
                 Text(
                     text = "Find an eye doctor",
-                    fontSize = 20.sp
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = colorResource(id = R.color.green)
                 )
             },
-            backgroundColor = MaterialTheme.colors.primary,
-            contentColor = Color.White
+            modifier = Modifier.fillMaxWidth(),
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = colorResource(id = R.color.light_gray)
+            )
         )
 
+        // Tabs
         var tabIndex by remember { mutableStateOf(0) }
         val tabs = listOf("By location", "By doctor", "Online & Lasik")
 
@@ -52,22 +60,33 @@ fun DoctorLocationScreen(viewModel: DoctorLocationViewModel = viewModel()) {
             TabRow(selectedTabIndex = tabIndex) {
                 tabs.forEachIndexed { index, title ->
                     Tab(
-                        text = { Text(title) },
+                        text = {
+                            when (index) {
+                                0 -> Text(title, color = colorResource(id = R.color.location_color))
+                                1 -> Text(title, color = colorResource(id = R.color.doctor_color))
+                                2 -> Text(title, color = colorResource(id = R.color.eye_color))
+                            }
+                        },
                         selected = tabIndex == index,
                         onClick = { tabIndex = index },
                         icon = {
                             when (index) {
                                 0 -> Icon(
                                     painter = painterResource(id = R.drawable.location_icon),
-                                    contentDescription = "Location Icon"
+                                    contentDescription = "Location Icon",
+                                    tint = colorResource(id = R.color.location_color)
                                 )
+
                                 1 -> Icon(
                                     painter = painterResource(id = R.drawable.doctor_icon),
-                                    contentDescription = "Doctor Icon"
+                                    contentDescription = "Doctor Icon",
+                                    tint = colorResource(id = R.color.doctor_color)
                                 )
+
                                 2 -> Icon(
                                     painter = painterResource(id = R.drawable.eye_icon),
-                                    contentDescription = "Online Icon"
+                                    contentDescription = "Online Icon",
+                                    tint = colorResource(id = R.color.eye_color)
                                 )
                             }
                         }
@@ -90,12 +109,17 @@ fun ByLocationTab(viewModel: DoctorLocationViewModel) {
     val response by viewModel.response.collectAsState(initial = "")
     val error by viewModel.error.collectAsState(initial = "")
     var showAlertDialog by remember { mutableStateOf(false) }
+    var locationText by remember { mutableStateOf("") }
 
     val locationPermissionRequest = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
-            useLocation(context)
+            useLocation(context) { location ->
+                locationText = "Latitude: ${location.latitude}, Longitude: ${location.longitude}"
+                Toast.makeText(context, locationText, Toast.LENGTH_SHORT).show()
+
+            }
         } else {
             println("Permission denied")
         }
@@ -135,6 +159,7 @@ fun ByLocationTab(viewModel: DoctorLocationViewModel) {
 
             Button(
                 onClick = { viewModel.searchByZip(zipCode) },
+                colors = ButtonDefaults.buttonColors(colorResource(id = R.color.green)),
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier
                     .weight(0.3f)
@@ -166,7 +191,9 @@ fun ByLocationTab(viewModel: DoctorLocationViewModel) {
             AlertDialog(
                 onDismissRequest = { showAlertDialog = false },
                 confirmButton = {
-                    TextButton(onClick = { showAlertDialog = false }) {
+                    TextButton(onClick = { showAlertDialog = false },
+                        colors = ButtonDefaults.buttonColors(colorResource(id = R.color.green)),
+                    ) {
                         Text("OK")
                     }
                 },
@@ -197,8 +224,8 @@ fun ByLocationTab(viewModel: DoctorLocationViewModel) {
         Button(
             onClick = {
                 locationPermissionRequest.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-                Toast.makeText(context, "Using your location", Toast.LENGTH_SHORT).show() // Show toast
             },
+            colors = ButtonDefaults.buttonColors(colorResource(id = R.color.green)),
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier.fillMaxWidth(),
         ) {
@@ -223,15 +250,16 @@ fun ByLocationTab(viewModel: DoctorLocationViewModel) {
         if (error.isNotEmpty()) {
             Text("Error: $error", modifier = Modifier.padding(top = 16.dp), color = Color.Red)
         }
+
     }
 }
 
 @SuppressLint("MissingPermission")
-fun useLocation(context: Context) {
+fun useLocation(context: Context, onLocationFound: (Location) -> Unit) {
     val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
     fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
         location?.let {
-            println("Location: ${it.latitude}, ${it.longitude}")
+            onLocationFound(it) // Update the location on the UI
         } ?: run {
             println("Location is null")
         }
@@ -264,21 +292,26 @@ fun DropdownMenuDemo(items: List<String>, onSelect: (String) -> Unit) {
             modifier = Modifier.fillMaxWidth()
         ) {
             items.forEach { item ->
-                DropdownMenuItem(onClick = {
-                    selectedItem = item
-                    onSelect(item)
-                    expanded = false
-                }) {
-                    Text(item)
-                }
+//                DropdownMenuItem(onClick = {
+//                    selectedItem = item
+//                    onSelect(item)
+//                    expanded = false
+//                }) {
+//                    Text(item)
+//                }
             }
         }
     }
 }
 
 @Composable
-fun TabContent(message: String) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(message)
+fun TabContent(content: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = content, fontSize = 20.sp, fontWeight = FontWeight.Bold)
     }
 }

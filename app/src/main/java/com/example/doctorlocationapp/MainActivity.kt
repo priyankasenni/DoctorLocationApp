@@ -12,7 +12,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             DoctorLocationAppTheme {
-                // The Surface is required for applying Material3 theme components.
                 Surface {
                     DoctorLocationScreen()                }
             }

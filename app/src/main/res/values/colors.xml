@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="green">#016520</color>
+    <color name="dark_gray">#212121</color>
+    <color name="light_gray">#D8D6D5</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="doctor_color">#944E89</color>
+    <color name="eye_color">#E30370</color>
+    <color name="location_color">#01651F</color>
+
+</resources>
