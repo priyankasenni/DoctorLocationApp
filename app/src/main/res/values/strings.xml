@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">DoctorLocationApp</string>
+        <string name="find_eye_doctor">Find an eye doctor</string>
+        <string name="tab_by_location">By location</string>
+        <string name="tab_by_doctor">By doctor</string>
+        <string name="tab_online_lasik">Online &amp; Lasik</string>
+        <string name="zip_code">Zip Code</string>
+        <string name="search_by_zip">SEARCH BY ZIP</string>
+        <string name="search_by_county">Search by County</string>
+        <string name="alert_dialog_message">Search by County Tapped</string>
+        <string name="ok">OK</string>
+        <string name="or">OR</string>
+        <string name="use_my_location">USE MY LOCATION</string>
+        <string name="response">Response:</string>
+        <string name="error">Error:</string>
+        <string name="network">Network</string>
+        <string name="access_network">Access Network</string>
+        <string name="insight_network">Insight Network</string>
+        <string name="select_network">Select Network</string>
+        <string name="dont_know">I don’t know</string>
+        <string name="location_icon">Location Icon</string>
+        <string name="doctor_icon">Doctor Icon</string>
+        <string name="online_icon">Online Icon</string>
 </resources>
+

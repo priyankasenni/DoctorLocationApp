@@ -1,6 +1,7 @@
 package com.example.doctorlocationapp.viewmodel
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.doctorlocationapp.data.repository.DoctorRepository
@@ -25,6 +26,7 @@ class DoctorLocationViewModel : ViewModel() {
                 if (isValidZipCode(zip)) {
                     val result = repository.searchByZip(zip)
                     Log.d("HTTP Response", result.toString())
+
                 } else {
                     _error.value = "Invalid Zip Code. Must be 5 digits."
                 }
