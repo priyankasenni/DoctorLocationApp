@@ -47,5 +47,16 @@ The project follows the **MVVM architecture** with the following structure:
    cd <repository-folder>
 
 
- ![Screenshot of the application](./screenshots/Location_tab_screen.png)
+## Screenshots
+
+<table>
+  <tr>
+    <td><img src="Location_tab_screen.png" alt="Location Tab Screen" width="200px" /></td>
+    <td><img src="Network_dropdown.png" alt="Network Dropdown" width="200px" /></td>
+    <td><img src="Search_by_county_alert_dialog.png" alt="Search by County Alert Dialog" width="200px" /></td>
+    <td><img src="Use_my_location_button_event.png" alt="Use My Location Button Event" width="200px" /></td>
+    <td><img src="Zipcode_validation_invalid_input.png" alt="Zip Code Validation - Invalid Input" width="200px" /></td>
+  </tr>
+</table>
+
 
