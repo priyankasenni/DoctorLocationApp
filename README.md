@@ -2,8 +2,6 @@
 
 This project demonstrates the implementation of a multi-tab screen using **Jetpack Compose** and **MVVM Architecture**. The app includes functionalities for network selection, zip code validation, and location-based operations, with clear separation of concerns between the UI, ViewModel, and Service layers.
 
----
-
 ## Features
 
 ### Tab Navigation
@@ -25,8 +23,6 @@ This project demonstrates the implementation of a multi-tab screen using **Jetpa
     - **Use My Location**:
       - Requests the device location using Android APIs (no further action required).
 
----
-
 ## Architecture
 The project follows the **MVVM architecture** with the following structure:
 1. **UI Layer**:
@@ -37,15 +33,15 @@ The project follows the **MVVM architecture** with the following structure:
    - Contains the HTTP call logic for the zip code search.
    - Ensures separation of concerns by isolating network operations from the ViewModel.
 
----
-
 ## Setup Instructions
 
-1. **Clone the Repository**:
+1. Clone the Repository:
    ```bash
    git clone <repository-url>
    cd <repository-folder>
-
+   ```
+2. Open the project in Android Studio.
+3. Build and run the app on an emulator or physical device.
 
 ## Screenshots
 
