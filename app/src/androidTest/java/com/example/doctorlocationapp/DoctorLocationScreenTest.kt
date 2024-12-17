@@ -1,3 +1,5 @@
+package com.example.doctorlocationapp
+
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import com.example.doctorlocationapp.ui.theme.screens.ByLocationTab

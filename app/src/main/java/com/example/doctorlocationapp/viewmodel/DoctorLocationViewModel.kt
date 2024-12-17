@@ -1,7 +1,6 @@
 package com.example.doctorlocationapp.viewmodel
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.doctorlocationapp.data.repository.DoctorRepository

@@ -36,6 +36,7 @@ import com.google.android.gms.location.LocationServices
 @Composable
 fun DoctorLocationScreen(viewModel: DoctorLocationViewModel = viewModel()) {
     Column(modifier = Modifier.fillMaxSize()) {
+
         // Top Bar with title
         TopAppBar(
             title = {
